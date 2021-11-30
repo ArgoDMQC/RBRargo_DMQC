@@ -14,6 +14,7 @@ A single routine call *compressibility_RBRargo3.m* does it all and apply the com
   *Cnew = compressibility_RBRargo3(COND,PRES,PRES_ADJUSTED,WMO)*
 
   The routine automatically imports the updated calibration coefficients for the WMO numbers specified. 
+
 3. Compute corrected salinity using gsw_SP_from_C( ) with Cnew
 
 
@@ -33,7 +34,8 @@ A single routine call *celltm_RBRargo3.m* does it all and apply all state-of-the
 3. Apply dynamic correction:
 
  Run *TEMPcell = celltm_RBRargo3(TEMP_ADJUSTED ,PRES_ADJUSTED,TEMP_CDNC, elptime)*
-3. Compute corrected salinity using gsw_SP_from_C( ) with TEMPcell
+
+4. Compute corrected salinity using gsw_SP_from_C( ) with TEMPcell
 
 
 ### Who do I talk to? ###
