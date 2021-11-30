@@ -37,4 +37,4 @@ A single routine call *celltm_RBRargo3.m* does it all and apply all state-of-the
 
 
 ### Who do I talk to? ###
-Write to Mathieu Dever at argo@rbr-global.com
+Write to RBR at argo@rbr-global.com
