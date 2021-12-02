@@ -95,7 +95,7 @@ end
 
 Vp = zeros(size(TEMP));
 % Use centre-differencing
-Vp(2:end-1) = abs((PRES(3:end)-PRES(1:end-2))./(e_time(3:end)-e_time(1:end)));
+Vp(2:end-1) = abs((PRES(3:end)-PRES(1:end-2))./(e_time(3:end)-e_time(1:end-2)));
 % use forward differencing for 1st datapoint to not lose it
 Vp(1) = abs((PRES(2)-PRES(1))./(e_time(2)-e_time(1)));
 % use backward differencing for last datapoint to not lose it
@@ -132,6 +132,8 @@ fn = fs/2;
 % Lueck and Picklo (1991)'s coefficients (a,b)
 a = 4*fn.*alpha.*tau./(1+4*fn.*tau);
 b = 1-2.*a./alpha;
+gridded.a = interp1(e_time(gooddata),a(gooddata),gridded.e_time);
+gridded.b = interp1(e_time(gooddata),b(gooddata),gridded.e_time);
 
 % Apply Lueck and Picklo (1991) recursive filter
 gridded.Tshort = zeros(size(gridded.TEMP));
@@ -140,7 +142,7 @@ gridded.Tshort = zeros(size(gridded.TEMP));
 gridded.Tshort(1) = 0;
 
 for tt = 2:length(gridded.TEMP)
-    gridded.Tshort(tt) = -b(tt)*gridded.Tshort(tt-1) + a(tt)*(gridded.TEMP(tt)-gridded.TEMP(tt-1));
+    gridded.Tshort(tt) = -gridded.b(tt)*gridded.Tshort(tt-1) + gridded.a(tt)*(gridded.TEMP(tt)-gridded.TEMP(tt-1));
 end; clear tt
 
 
