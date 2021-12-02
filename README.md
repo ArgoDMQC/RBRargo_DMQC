@@ -1,6 +1,6 @@
 # README #
 
-The repository includes resources necessary to improve data quality from the RBRargo3 in Delayed-Mode Quality Check (DMQC). It addresses to major aspects of the data:
+The repository includes resources necessary to improve data quality from the RBRargo3 in Delayed-Mode Quality Check (DMQC). It addresses two major aspects of the data:
 1. Compressibility correction
 2. Dynamic corrections
 
@@ -13,7 +13,7 @@ A single routine call *compressibility_RBRargo3.m* does it all and apply the com
 
   *Cnew = compressibility_RBRargo3(COND,PRES,PRES_ADJUSTED,WMO)*
 
-  The routine automatically imports the updated calibration coefficients for the WMO numbers specified. 
+  The routine automatically imports the updated calibration coefficients for the WMO numbers specified.
 
 3. Compute corrected salinity using gsw_SP_from_C( ) with Cnew
 
