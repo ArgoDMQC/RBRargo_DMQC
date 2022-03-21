@@ -1,7 +1,7 @@
 # README #
 
 The repository includes resources necessary to improve data quality from the RBRargo3 in Delayed-Mode Quality Check (DMQC). It addresses two major aspects of the data:
-1. Compressibility correction
+1. Compressibility correction for RBRargo3 CTDs calibrated before April 2021. For RBRargo3 CTDs calibrated after April 2021, the compressibility of the conductivity sensor is corrected for as part of the routine CTD calibration.
 2. Dynamic corrections
 
 ### Compressibility correction ###
