@@ -25,15 +25,16 @@ A single routine call *celltm_RBRargo3.m* does it all and apply all state-of-the
 * Requirements:
   * TEMP - Marine temperature measured by the RBRargo3 [in °C]
   * PRES - Sea Pressure measured by the RBRargo3 [in dbar]
-  * NB_SAMPLE_CTD
   * TEMP_CNDC - Internal temperature recorded by the RBRargo3 [in °C]
-  * sampling frequency [in Hz]
+  * e_time - the elapsed time [in s]
+
+The input vectors should be organized in ascending order, that is where e_time is increasing.
 
 1. Compute conductivity using gsw_C_from_SP( )
 2. Compute elapsed time. If not directly available, it can be inferred from the sampling frequency (and NB_SAMPLE_CTD if data is binned).
 3. Apply dynamic correction:
 
- Run *TEMPcell = celltm_RBRargo3(TEMP_ADJUSTED ,PRES_ADJUSTED,TEMP_CDNC, elptime)*
+ Run *TEMPcell = celltm_RBRargo3(TEMP_ADJUSTED ,PRES_ADJUSTED,TEMP_CDNC, e_time)*
 
 4. Compute corrected salinity using gsw_SP_from_C( ) with TEMPcell
 
