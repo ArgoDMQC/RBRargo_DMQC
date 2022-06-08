@@ -1,4 +1,4 @@
-function Tcell = celltm_RBRargo3(TEMP,PRES,TEMP_CNDC,e_time)
+function TEMPcell = celltm_RBRargo3(TEMP,PRES,TEMP_CNDC,e_time)
 
 %{
 DESCRIPTION: This function completes three thermal mass adjustements:
@@ -39,10 +39,10 @@ TEMP_CNDC: Internal temperature [°C] reported by the RBRargo3 CTD (size [mx1])
 e_time: elapsed time of the samples [seconds] (size [mx1])
 
 Outputs: 
-Tcell: Temperature adjusted for thermal mass errors (size [mx1]).
+TEMPcell: Temperature adjusted for thermal mass errors (size [mx1]).
 
-while TEMP is still the appropriate water temperature, Tcell should be used
-to adjust Salinity. (e.g. PSAL_ADJUSTED = gsw_SP_from_C(C0,Tcell,PRES)
+while TEMP is still the appropriate water temperature, TEMPcell should be used
+to adjust Salinity. (e.g. PSAL_ADJUSTED = gsw_SP_from_C(C0,TEMPcell,PRES)
 
 !! Use this function at your own risk!!
 The author takes no responsibility for errors or omissions, but will be
@@ -72,6 +72,8 @@ Mathieu Dever (e-mail: argo@rbr-global.com)
 22 Nov 2021
 
 v1.0 - 22/11/2021
+v2.0 - 07/07/2022 - update the relationships between key coefficients and
+water-speed (based on revisions to Dever et al. 2022)
 %}
 
 %% checks 
@@ -124,7 +126,7 @@ gooddata = find(~isnan(TEMP) & ~isnan(e_time));
 gridded.e_time = min(e_time):1:max(e_time)+1;
 gridded.TEMP = interp1(e_time(gooddata),TEMP(gooddata),gridded.e_time);
 
-% Samplig frequency
+% Sampling frequency
 fs = 1;
 % Nyquist frequency
 fn = fs/2;
@@ -155,7 +157,7 @@ Tshort = NaN*TEMP;
 Tshort(gooddata) = interp1(gridded.e_time,gridded.Tshort,e_time(gooddata));
 clear gridded a b fs fn gooddata
 
-%% Compute Tcell
+%% Compute TEMPcell
 
 % Compute the adjusted temperature that should be used to compute
 % salinity corrected for thermal mass errors. It should ONLY be used to
@@ -163,4 +165,4 @@ clear gridded a b fs fn gooddata
 % of the water. Note the signs, as per the convention established in
 % Morison (1994)
 
-Tcell = Tcor + Tlong - Tshort;
+TEMPcell = Tcor + Tlong - Tshort;
