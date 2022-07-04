@@ -108,9 +108,9 @@ Vp = Vp * 100;
 
 %% Compute thermal mass coefficients based on Vp.
 
-ctcoeff = 0.07*(Vp).^(-0.86) + 7.5e-9;
-alpha = 0.50*(Vp).^(-1.09) + 1.6e-7;
-tau = 13.46*(Vp).^(-0.22) + 2.2e-5;
+ctcoeff = 0.14*(Vp).^(-1.00);
+alpha = 0.37*(Vp).^(-1.03);
+tau = 16.02*(Vp).^(-0.26);
 
 %% Compute Tcor (C-T lag)
 CTlag = -0.35;
