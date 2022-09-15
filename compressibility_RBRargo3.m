@@ -40,7 +40,7 @@ if min([n,m])>1
 end; clear m n
 
 % Check sizes are right
-if size(COND)~=size(PRES) || length(WMO)~=1
+if size(COND)~=size(PRES) | length(WMO)~=1
     disp('Input size not matching')
     return
 end
@@ -68,25 +68,25 @@ clear opts
 
 row = find(RBRargo3table.WMO ==  WMO);
 X2old = RBRargo3table.X2old(row);
-X3old = RBRargo3table.X2old(row);
-X4old = RBRargo3table.X2old(row);
+X3old = RBRargo3table.X3old(row);
+X4old = RBRargo3table.X4old(row);
 
 % if new coefficients could not be determined in situ, old coefficients are
 % used.
-if isnan(RBRargo3table.X2(row)) || isnan(RBRargo3table.X3(row)) || isnan(RBRargo3table.X4(row));
+if isnan(RBRargo3table.X2(row)) | isnan(RBRargo3table.X3(row)) | isnan(RBRargo3table.X4(row))
     X2 = X2old;
     X3 = X3old;
     X4 = X4old;
 else
     X2 = RBRargo3table.X2(row);
-    X3 = RBRargo3table.X2(row);
-    X4 = RBRargo3table.X2(row);
+    X3 = RBRargo3table.X3(row);
+    X4 = RBRargo3table.X4(row);
 end
 
 
 %% Correct conductivity
 
-Cnew = COND *...
+Cnew = COND .*...
     (1 + X2old*PRES + X3old*PRES.^2 + X4old*PRES.^3)./...
     (1 + X2*PRES_ADJUSTED + X3*PRES_ADJUSTED.^2 + X4*PRES_ADJUSTED.^3);
 
