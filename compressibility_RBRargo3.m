@@ -67,6 +67,10 @@ clear opts
 
 
 row = find(RBRargo3table.WMO ==  WMO);
+if isempty(row)
+    warning('WMO not found in the database')
+end
+
 X2old = RBRargo3table.X2old(row);
 X3old = RBRargo3table.X3old(row);
 X4old = RBRargo3table.X4old(row);
