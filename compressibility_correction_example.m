@@ -54,3 +54,31 @@ ylabel('P [dbar]')
 xlabel('∆C [mS/cm]')
 title({'Change in conductivity after applying','custom compressibility correction'})
 set(gca,'fontsize',18)
+
+subplot(1,3,2)
+plot(argo.PSALpsu-gsw_SP_from_C(Cnew,argo.TEMPdegree_Celsius,argo.PRESdecibar),argo.PRESdecibar,'k','linewidth',2);
+axis ij
+grid on; grid minor
+ylim([0 2000])
+ylabel('P [dbar]')
+xlabel('∆S [ ]')
+title({'Change in salinity after applying','custom compressibility correction'})
+set(gca,'fontsize',18)
+
+subplot(1,3,3)
+plot(argo.PSALpsu,argo.PRESdecibar,'-k','linewidth',2);
+hold on
+plot(gsw_SP_from_C(Cnew,argo.TEMPdegree_Celsius,argo.PRESdecibar),argo.PRESdecibar,'-r','linewidth',2);
+axis ij
+grid on; grid minor
+ylim([0 2000])
+ylabel('P [dbar]')
+xlabel('PSAL [ ]')
+%title({'Change in salinity after applying','custom compressibility correction'})
+set(gca,'fontsize',18)
+legend('PSAL','PSAL_ ADJUSTED','location','southeast')
+
+
+
+
+

@@ -58,7 +58,7 @@ def compressibility_RBRargo3(COND,PRES,PRES_ADJUSTED,WMO):
         raise Exception("WMO not found in the database")
     
     if any(np.isnan(coefs.X2[coefs.WMO == WMO])):
-        raise Exception("Sorry, No coefficients found for this WMO.")
+        raise Exception("Sorry, no custom compressibility correction available. Default correction is used!")
     
     
     X2old = np.array(coefs.X2old[coefs.WMO == WMO])

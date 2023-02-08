@@ -77,6 +77,7 @@ if isnan(RBRargo3table.X2(row)) | isnan(RBRargo3table.X3(row)) | isnan(RBRargo3t
     X2 = X2old;
     X3 = X3old;
     X4 = X4old;
+    warning('Sorry, no custom compressibility correction available. Default correction is used!')
 else
     X2 = RBRargo3table.X2(row);
     X3 = RBRargo3table.X3(row);
