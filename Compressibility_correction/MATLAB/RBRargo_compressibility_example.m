@@ -31,7 +31,7 @@ opts.EmptyLineRule = "read";
 opts = setvaropts(opts, "DATEYYYYMMDDTHHMISSZ", "EmptyFieldRule", "auto");
 
 % Import the data
-argo = readtable("6903078_testdata.csv", opts);
+argo = readtable("../../test_data/6903078_testdata.csv", opts);
 
 % Clear temporary variables
 clear opts
@@ -76,7 +76,7 @@ ylabel('P [dbar]')
 xlabel('PSAL [ ]')
 %title({'Change in salinity after applying','custom compressibility correction'})
 set(gca,'fontsize',18)
-legend('PSAL','PSAL_ ADJUSTED','location','southeast')
+legend('PSAL','PSAL_ADJUSTED_Padj','location','southeast','Interpreter','none')
 
 
 

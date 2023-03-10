@@ -4,7 +4,7 @@
 # In[71]:
 
 
-def compressibility_RBRargo3(COND,PRES,PRES_ADJUSTED,WMO):
+def RBRargo3_compressibility(COND,PRES,PRES_ADJUSTED,WMO):
   
     """
     DESCRIPTION: This function updates the compressibility calibration on a set
@@ -51,7 +51,7 @@ def compressibility_RBRargo3(COND,PRES,PRES_ADJUSTED,WMO):
         raise Exception("WMO size must be 1")
 
     # Import look-up table with new coefficients      
-    coefs = pd.read_csv('RBRargo3_compressibility_table.csv',
+    coefs = pd.read_csv('../RBRargo3_compressibility_table.csv',
                         usecols=range(0,13))
 
     if len(coefs.X2[coefs.WMO == WMO])==0:
