@@ -1,4 +1,4 @@
-function TEMPcell = celltm_RBRargo3(TEMP,PRES,TEMP_CNDC,e_time)
+function TEMPcell = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,e_time)
 
 %{
 DESCRIPTION: This function completes three thermal mass adjustements:
