@@ -46,6 +46,7 @@ TEMP_CNDC = argo.TEMP_CNDCdegree_Celsius;
 
 %% Infers elptime using a nominal ascent rate of 10 cm/s
 elptime = (max(PRES) - PRES)/0.10;
+
 % Sort the data chronologically
 [elptime,I] = sort(elptime);
 PRES = PRES(I);
@@ -59,9 +60,9 @@ SA = gsw_SA_from_SP(PSAL,PRES,lon,lat);
 CT = gsw_CT_from_t(SA,TEMP,PRES);
 sig = gsw_sigma0(SA,CT);
 
-%%
-TEMP_celltm = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,elptime);
+%% Apply thermal inertia corrections
 
+TEMP_celltm = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,elptime);
 PSAL_ADJUSTED_CTM = gsw_SP_from_C(COND, TEMP_celltm, PRES);
 
 %% Compute additional variables using GSW TEOS-10 
@@ -86,7 +87,7 @@ set(gca,'fontsize',18, 'xaxislocation','top')
 subplot(1,3,2)
 plot(PSAL,PRES,'k','linewidth',2);
 hold on
-plot(PSAL_ADJUSTED_Padj_CTM,PRES,'r','linewidth',2);
+plot(PSAL_ADJUSTED_CTM,PRES,'r','linewidth',2);
 axis ij
 grid on; grid minor
 ylim([0 80])
@@ -103,7 +104,7 @@ axis ij
 grid on; grid minor
 ylim([0 80])
 ylabel('P [dbar]')
-xlabel('S [ ]')
+xlabel('\sigma_0 [kg/m^3]')
 legend('\sigma_0','\sigma_0 (ADJUSTED CTM)')
 set(gca,'fontsize',18, 'xaxislocation','top')
 
