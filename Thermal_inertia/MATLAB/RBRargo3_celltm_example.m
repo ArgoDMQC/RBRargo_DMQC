@@ -108,6 +108,7 @@ xlabel('\sigma_0 [kg/m^3]')
 legend('\sigma_0','\sigma_0 (ADJUSTED CTM)')
 set(gca,'fontsize',18, 'xaxislocation','top')
 
+set(gcf,'color','w')
 
 
 
