@@ -40,7 +40,7 @@ clear opts
 argo.COND = gsw_C_from_SP(argo.PSALpsu,argo.TEMPdegree_Celsius,argo.PRESdecibar);
 
 %% Applies the new compressibility correction for that particular float
-Cnew = compressibility_RBRargo3(argo.COND,argo.PRESdecibar,argo.PRES_ADJUSTEDdecibar,6903078);
+Cnew = RBRargo_compressibility(argo.COND,argo.PRESdecibar,argo.PRES_ADJUSTEDdecibar,6903078);
 
 %% Plot the difference in conductivity before and after the correction as a function of pressure 
 
@@ -77,8 +77,3 @@ xlabel('PSAL [ ]')
 %title({'Change in salinity after applying','custom compressibility correction'})
 set(gca,'fontsize',18)
 legend('PSAL','PSAL_ADJUSTED_Padj','location','southeast','Interpreter','none')
-
-
-
-
-
