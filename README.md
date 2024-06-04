@@ -24,5 +24,5 @@ Repository includes:
 
 ### SQRT_adjustment
 In January 2024, RBR discovered an inconsistency between salinity readings reported by an instrument while streaming and the salinity readings calculated by Ruskin with the downloaded data ([RBR Report RBR#0016488revA](https://oem.rbr-global.com/floats/files/5898249/84673381/1/1710796993730/0016488revA+RBRargo3+C.T.D%2C+Field+Service+Bulletin+Q1+2024+bis.pdf)). The root cause of the discrepancy between the onboard calculated and the Ruskin calculated salinity was quickly attributed to an approximation in the square root calculation onboard the instrument. The error can be adjusted for in post-processing using the set of routines provided in the SQRT_adjustment folder. Repository includes:
-* A routine _correct_sqrt_error_ that computes the thermal error associated with the thermal inertia of the conductivity cell (TEMP_celltm)
+* A routine _correct_sqrt_error_ that adjusts the salinity data for the square root discrepancy
 * A routine _correct_sqrt_error_testcase_ that shows an example on how _correct_sqrt_error_ can be used.
