@@ -62,7 +62,7 @@ sig = gsw_sigma0(SA,CT);
 
 %% Apply thermal inertia corrections
 
-TEMP_celltm = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,elptime);
+TEMP_celltm = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,elptime); %% RBRargo_CTcell_model can be specified as an optional 5th argument to apply different coefficients
 PSAL_ADJUSTED_CTM = gsw_SP_from_C(COND, TEMP_celltm, PRES);
 
 %% Compute additional variables using GSW TEOS-10 

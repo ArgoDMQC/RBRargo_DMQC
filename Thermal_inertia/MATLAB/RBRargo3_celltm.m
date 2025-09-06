@@ -1,4 +1,4 @@
-function TEMPcell = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,e_time)
+function TEMPcell = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,e_time, RBRargo_CTcell_model)
 
 %{
 DESCRIPTION: This function completes three thermal mass adjustements:
@@ -68,13 +68,20 @@ Atmospheric and Oceanic Technology, 11(4), 1151-1164
 
 
 AUTHOR:
-Mathieu Dever (e-mail: argo@rbr-global.com)
-22 Nov 2021
+Mathieu Dever, Hanyuan Liu (e-mail: argo@rbr-global.com)
+05 Sept 2025
 
 v1.0 - 22/11/2021
 v2.0 - 07/07/2022 - update the relationships between key coefficients and
 water-speed (based on revisions to Dever et al. 2022)
+v3.0 - 05/09/2025 - add option for RBRargo_CTcell_model
 %}
+
+%% Set default if argument not provided
+if nargin < 5 || isempty(RBRargo_CTcell_model)
+    warning('No RBRargo_CTcell_model argument provided, defaulting to "RBRargo|2k_CTcell_pre2025" coefficients.');
+    RBRargo_CTcell_model = 'RBRargo|2k_CTcell_pre2025';
+end
 
 %% checks 
 
@@ -107,10 +114,24 @@ Vp(end) = abs(((PRES(end)-PRES(end-1))./(e_time(end)-e_time(end-1))));
 Vp = Vp * 100;
 
 %% Compute thermal mass coefficients based on Vp.
-
-ctcoeff = 0.14*(Vp).^(-1.00);
-alpha = 0.37*(Vp).^(-1.03);
-tau = 16.02*(Vp).^(-0.26);
+if strcmp(RBRargo_CTcell_model, 'RBRargo|2k_CTcell_2025')
+    % These coefficients are for RBRargo|2k CTcell design released in 2025
+    ctcoeff = 0.14 * Vp .^ (-1.07);
+    alpha   = 0.18 * Vp .^ (-0.54);
+    tau     = 37.33 * Vp .^ (-0.50);
+elseif strcmp(RBRargo_CTcell_model, 'RBRargo|2k_CTcell_pre2025')
+    % These coefficients are for RBRargo|2k CTcell design released in 2017
+    ctcoeff = 0.14 * Vp .^ (-1.00);
+    alpha   = 0.37 * Vp .^ (-1.03);
+    tau     = 16.02 * Vp .^ (-0.26);
+elseif strcmp(RBRargo_CTcell_model, 'RBRargo|6k_CTcell')
+    % These coefficients are for RBRargo|6k CTcell
+    ctcoeff = 0.09 * Vp .^ (-1.17);
+    alpha   = 0.27 * Vp .^ (-0.74);
+    tau     = 31.54 * Vp .^ (-0.22);
+else
+    error('RBRargo_CTcell_model must be "RBRargo|2k_CTcell_2025", "RBRargo|2k_CTcell_pre2025" or "RBRargo|6k_CTcell"');
+end
 
 %% Compute Tcor (C-T lag)
 CTlag = -0.35;
