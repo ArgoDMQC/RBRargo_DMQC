@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8    
 
-def RBRargo3_celltm(TEMP, PRES, TEMP_CNDC, e_time, RBRargo_CTcell_model = None):
+def RBRargo3_celltm(TEMP, PRES, TEMP_CNDC, e_time, dynamiccorrectionmodel = None):
     
     """"
     DESCRIPTION: This function completes three thermal mass adjustements:
@@ -40,6 +40,7 @@ def RBRargo3_celltm(TEMP, PRES, TEMP_CNDC, e_time, RBRargo_CTcell_model = None):
     PRES: pressure [dbar] (size [mx1]) 
     TEMP_CNDC: Internal temperature [°C] reported by the RBRargo3 CTD (size [mx1])
     e_time: elapsed time of the samples [seconds] (size [mx1])
+    dynamiccorrectionmodel: Specifies the CTD model for dynamic correction purposes
 
     Outputs: 
     TEMPcell: Temperature adjusted for thermal mass errors (size [mx1]).
@@ -75,7 +76,7 @@ def RBRargo3_celltm(TEMP, PRES, TEMP_CNDC, e_time, RBRargo_CTcell_model = None):
     05 Sept 2025
 
     v1.0 - 20/03/2023
-    v2.0 - 05/09/2025 - add option for RBRargo_CTcell_model
+    v2.0 - 05/09/2025 - add option for dynamiccorrectionmodel
     """
 
     import numpy as np
@@ -106,28 +107,28 @@ def RBRargo3_celltm(TEMP, PRES, TEMP_CNDC, e_time, RBRargo_CTcell_model = None):
     # convert ascent rate to cm/s
     Vp *= 100
 
-    if RBRargo_CTcell_model is None:
-        warnings.warn('No RBRargo_CTcell_model argument provided, defaulting to "RBRargo|2k_CTcell_pre2025" coefficients.')
-        RBRargo_CTcell_model = 'RBRargo|2k_CTcell_pre2025'        
+    if dynamiccorrectionmodel is None:
+        warnings.warn('No dynamiccorrectionmodel argument provided, defaulting to "RBRargo|2k_CTcell_pre2025" coefficients.')
+        dynamiccorrectionmodel = 'RBRargo|2k_CTcell_pre2025'        
     
     # Compute thermal mass coefficients based on Vp.
-    if RBRargo_CTcell_model == 'RBRargo|2k_CTcell_2025':
+    if dynamiccorrectionmodel == 'RBRargo|2k_CTcell_2025':
         # These coefficients are for RBRargo|2k CTcell design released in 2025
         ctcoeff = 0.14 * Vp ** (-1.07)
         alpha = 0.18 * Vp ** (-0.54)
         tau = 37.33 * Vp ** (-0.50)
-    elif RBRargo_CTcell_model == 'RBRargo|2k_CTcell_pre2025':
+    elif dynamiccorrectionmodel == 'RBRargo|2k_CTcell_pre2025':
         # These coefficients are for RBRargo|2k CTcell design released in 2017     
         ctcoeff = 0.14 * Vp ** (-1.00)
         alpha = 0.37 * Vp ** (-1.03)
         tau = 16.02 * Vp ** (-0.26)
-    elif RBRargo_CTcell_model == 'RBRargo|6k_CTcell': 
+    elif dynamiccorrectionmodel == 'RBRargo|6k_CTcell': 
         # These coefficients are for RBRargo|6k CTcell   
         ctcoeff = 0.09 * Vp ** (-1.17)
         alpha = 0.27 * Vp ** (-0.74)
         tau = 31.54 * Vp ** (-0.22)   
     else:
-        raise Exception('RBRargo_CTcell_model must be "RBRargo|2k_CTcell_2025", "RBRargo|2k_CTcell_pre2025" or "RBRargo|6k_CTcell"')
+        raise Exception('dynamiccorrectionmodel must be "RBRargo|2k_CTcell_2025", "RBRargo|2k_CTcell_pre2025" or "RBRargo|6k_CTcell"')
     
     # Compute Tcor (C-T lag)
     CTlag = -0.35
