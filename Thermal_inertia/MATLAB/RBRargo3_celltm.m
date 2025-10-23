@@ -1,4 +1,4 @@
-function TEMPcell = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,e_time, RBRargo_CTcell_model)
+function TEMPcell = RBRargo3_celltm(TEMP,PRES,TEMP_CNDC,e_time, dynamiccorrectionmodel)
 
 %{
 DESCRIPTION: This function completes three thermal mass adjustements:
@@ -37,6 +37,7 @@ TEMP: temperature [°C] (ITS-90), as reported by the Argo float (size [mx1])
 PRES: pressure [dbar] (size [mx1]) 
 TEMP_CNDC: Internal temperature [°C] reported by the RBRargo3 CTD (size [mx1])
 e_time: elapsed time of the samples [seconds] (size [mx1])
+dynamiccorrectionmodel: Specifies the CTD model for dynamic correction purposes
 
 Outputs: 
 TEMPcell: Temperature adjusted for thermal mass errors (size [mx1]).
@@ -74,13 +75,13 @@ Mathieu Dever, Hanyuan Liu (e-mail: argo@rbr-global.com)
 v1.0 - 22/11/2021
 v2.0 - 07/07/2022 - update the relationships between key coefficients and
 water-speed (based on revisions to Dever et al. 2022)
-v3.0 - 05/09/2025 - add option for RBRargo_CTcell_model
+v3.0 - 05/09/2025 - add option for dynamiccorrectionmodel
 %}
 
 %% Set default if argument not provided
-if nargin < 5 || isempty(RBRargo_CTcell_model)
-    warning('No RBRargo_CTcell_model argument provided, defaulting to "RBRargo|2k_CTcell_pre2025" coefficients.');
-    RBRargo_CTcell_model = 'RBRargo|2k_CTcell_pre2025';
+if nargin < 5 || isempty(dynamiccorrectionmodel)
+    warning('No dynamiccorrectionmodel argument provided, defaulting to "RBRargo|2k_CTcell_pre2025" coefficients.');
+    dynamiccorrectionmodel = 'RBRargo|2k_CTcell_pre2025';
 end
 
 %% checks 
@@ -114,23 +115,23 @@ Vp(end) = abs(((PRES(end)-PRES(end-1))./(e_time(end)-e_time(end-1))));
 Vp = Vp * 100;
 
 %% Compute thermal mass coefficients based on Vp.
-if strcmp(RBRargo_CTcell_model, 'RBRargo|2k_CTcell_2025')
+if strcmp(dynamiccorrectionmodel, 'RBRargo|2k_CTcell_2025')
     % These coefficients are for RBRargo|2k CTcell design released in 2025
     ctcoeff = 0.14 * Vp .^ (-1.07);
     alpha   = 0.18 * Vp .^ (-0.54);
     tau     = 37.33 * Vp .^ (-0.50);
-elseif strcmp(RBRargo_CTcell_model, 'RBRargo|2k_CTcell_pre2025')
+elseif strcmp(dynamiccorrectionmodel, 'RBRargo|2k_CTcell_pre2025')
     % These coefficients are for RBRargo|2k CTcell design released in 2017
     ctcoeff = 0.14 * Vp .^ (-1.00);
     alpha   = 0.37 * Vp .^ (-1.03);
     tau     = 16.02 * Vp .^ (-0.26);
-elseif strcmp(RBRargo_CTcell_model, 'RBRargo|6k_CTcell')
+elseif strcmp(dynamiccorrectionmodel, 'RBRargo|6k_CTcell')
     % These coefficients are for RBRargo|6k CTcell
     ctcoeff = 0.09 * Vp .^ (-1.17);
     alpha   = 0.27 * Vp .^ (-0.74);
     tau     = 31.54 * Vp .^ (-0.22);
 else
-    error('RBRargo_CTcell_model must be "RBRargo|2k_CTcell_2025", "RBRargo|2k_CTcell_pre2025" or "RBRargo|6k_CTcell"');
+    error('dynamiccorrectionmodel must be "RBRargo|2k_CTcell_2025", "RBRargo|2k_CTcell_pre2025" or "RBRargo|6k_CTcell"');
 end
 
 %% Compute Tcor (C-T lag)
